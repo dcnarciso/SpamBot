@@ -19,9 +19,12 @@ import os
 data_path = 'C:/Users/DMoney/Desktop/Programming/Python/mtg_bot/'
 os.chdir(data_path)
 
+# Run this when you have the dataframe saved properly
 data = pd.read_pickle('./df_cards_war')
 
 ###############################################################################
+##Comment the following code when you have the dataframe saved properly. No need to scrape it every time.
+
 #This code scrapes the card names for the War of the Spark set
 # list_of_cards = [f'https://scryfall.com/card/war/{num}' for num in range(1,276)]
 
