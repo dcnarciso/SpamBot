@@ -15,8 +15,16 @@ os.chdir(data_path)
 data = pd.read_pickle('./df_cards_war')
 
 def get_image_from_card_name(name):
-    #get url from name of card input as str
-    #Example: list(data.url)[int(data[data.name == 'ajanis-pridemate'].index.values)]
+    '''
+    This code will pull the name input from discord with no punctuation and spaces
+    replaced by '-'' as:
+
+    !ajanis-pridemate
+
+    then check the local df/pickled df for the card name and pull the url. 
+    Then grab the card image and embed it in discord chat.
+    '''
+
     url = list(data.url)[int(data[data.name == name].index.values)]
     resp = requests.get(url)
     soup = BeautifulSoup(resp.text, 'html.parser')
