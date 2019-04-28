@@ -1,12 +1,7 @@
 ###############################################################################
 ''' 
-This code will pull the name input from discord with no punctuation and spaces
-replaced by '-'' as:
-
-!ajanis-pridemate
-
-then check the local df/pickled df for the card name and pull the url. 
-Then grab the card image and embed it in discord chat.
+This code scrapes card info from scryfall. It will need to be edited to account for different sets and the number of cards to look for in a set is hardcoded.
+Originally only for use gathering War of the Spark card info.
 
 '''
 
