@@ -24,7 +24,7 @@ def get_image_from_card_name(name):
     return cimg
 
 client = discord.Client()
-token = 'MzkzOTE0MzA4NTgyNTcyMDMy.DR8s6A.z3u8Hrp4T_GD74HxgCMp7-iuYBM'
+token = 'yourtokenhere'
 
 bot = discord.ext.commands.Bot(command_prefix='!')
 
