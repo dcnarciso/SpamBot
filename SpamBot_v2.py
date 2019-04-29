@@ -2,37 +2,13 @@ import discord
 from discord.ext import commands
 import asyncio
 import random
-import pickle
-import os
-import pandas as pd 
 from bs4 import BeautifulSoup
 import requests
 
-import os
-data_path = 'C:/Users/DMoney/Desktop/Programming/Python/mtg_bot/'
-os.chdir(data_path)
-
-data = pd.read_pickle('./df_cards_war')
-
-def get_image_from_card_name(name):
-    '''
-    This code will pull the name input from discord with no punctuation and spaces
-    replaced by '-'' as:
-
-    !ajanis-pridemate
-
-    then check the local df/pickled df for the card name and pull the url. 
-    Then grab the card image and embed it in discord chat.
-    '''
-
-    url = list(data.url)[int(data[data.name == name].index.values)]
-    resp = requests.get(url)
-    soup = BeautifulSoup(resp.text, 'html.parser')
-    cimg = [x['src'] for x in soup.find_all('img', {'class' : 'card war border-black'})][0]
-    return cimg
+# data = pd.read_pickle('./df_cards_war')
 
 client = discord.Client()
-token = 'yourtokenhere'
+token = 'MzkzOTE0MzA4NTgyNTcyMDMy.DR8s6A.z3u8Hrp4T_GD74HxgCMp7-iuYBM'
 
 bot = discord.ext.commands.Bot(command_prefix='!')
 
@@ -94,18 +70,36 @@ async def on_message(message):
             await message.channel.send('Not a valid game, bro.')
             return
 
-    elif message.content.upper().startswith('!CARD'):
+    elif message.content.upper().startswith('!YGO'):
         args = message.content.split(' ')
         try:
-            card_image = get_image_from_card_name(str(args[1]))
-            e = discord.Embed(title = args[1])
+            name_you_type = ' '.join(args[1:])
+            url = 'https://db.ygoprodeck.com/api/v4/cardinfo.php?name=' + name_you_type
+            r = requests.get(url).json()
+            card_image = r[0][random.randint(0,len(r[0])-1)]['image_url']
+
+            e = discord.Embed(title = 'Is this your card?\n' + name_you_type)
             e.set_image(url = card_image)
             await message.channel.send(embed = e)
 
         except Exception:
-            # await message.channel.send('Did you type it right?')
             return
 
+    elif message.content.upper().startswith('!MTG'):
+        args = message.content.split(' ')
+        try:
+            name_you_type = ' '.join(args[1:])
+            url = 'https://gatherer.wizards.com/Pages/Card/Details.aspx?name=' + name_you_type
+            resp = requests.get(url)
+            soup = BeautifulSoup(resp.text, 'html.parser')
+            card_image = 'https://gatherer.wizards.com/' + [x['src'] for x in soup.find_all('img')][2].split('../../')[1]
+
+            e = discord.Embed(title = 'Is this your card?\n' + name_you_type)
+            e.set_image(url = card_image)
+            await message.channel.send(embed = e)
+
+        except Exception:
+            return
 
 client.run(token)
 
